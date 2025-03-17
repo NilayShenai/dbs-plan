@@ -32,5 +32,3 @@ A simple Meal Planner web application built with **Streamlit** and **SQLite**. U
 ## License
 Open-source under the **MIT License**.
 
----
-**Developed by Your Name**
