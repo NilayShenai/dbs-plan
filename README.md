@@ -28,7 +28,3 @@ A simple Meal Planner web application built with **Streamlit** and **SQLite**. U
 - Create an account or log in.
 - Add meals and plan them.
 - Track daily intake and progress.
-
-## License
-Open-source under the **MIT License**.
-
