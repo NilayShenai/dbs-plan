@@ -1,15 +1,21 @@
 import streamlit as st
 import sqlite3
 from datetime import datetime
+from cryptography.fernet import Fernet
+key = Fernet.generate_key()
+cipher_suite = Fernet(key)
+def encrypt_password(password): #encrypt
+    return cipher_suite.encrypt(password.encode())
 
-# Database connection
+def decrypt_password(encrypted_password): #decrypt
+    return cipher_suite.decrypt(encrypted_password).decode()
+
 def create_connection(db_name):
     conn = sqlite3.connect(db_name)
     return conn
 
-# Initialize database
 def init_db(conn):
-    cursor = conn.cursor()
+    cursor = conn.cursor()              #basic table creation
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Users (
             user_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -55,17 +61,16 @@ def init_db(conn):
         )
     ''')
     conn.commit()
-
-# Add a new user
+#normal queries 
 def add_user(conn, username, password, age, gender, fitness_goal, daily_calorie_goal):
     cursor = conn.cursor()
+    encrypted_password = encrypt_password(password)
     cursor.execute('''
         INSERT INTO Users (username, password, age, gender, fitness_goal, daily_calorie_goal)
         VALUES (?, ?, ?, ?, ?, ?)
-    ''', (username, password, age, gender, fitness_goal, daily_calorie_goal))
+    ''', (username, encrypted_password, age, gender, fitness_goal, daily_calorie_goal))
     conn.commit()
 
-# Add a new meal
 def add_meal(conn, meal_name, calories, protein, carbs, fats, dietary_preference):
     cursor = conn.cursor()
     cursor.execute('''
@@ -74,7 +79,6 @@ def add_meal(conn, meal_name, calories, protein, carbs, fats, dietary_preference
     ''', (meal_name, calories, protein, carbs, fats, dietary_preference))
     conn.commit()
 
-# Plan a meal for a user
 def plan_meal(conn, user_id, meal_id, date):
     cursor = conn.cursor()
     cursor.execute('''
@@ -83,7 +87,6 @@ def plan_meal(conn, user_id, meal_id, date):
     ''', (user_id, meal_id, date))
     conn.commit()
 
-# Fetch meals based on dietary preference
 def fetch_meals(conn, dietary_preference):
     cursor = conn.cursor()
     cursor.execute('''
@@ -91,7 +94,6 @@ def fetch_meals(conn, dietary_preference):
     ''', (dietary_preference,))
     return cursor.fetchall()
 
-# Fetch user's meal plan
 def fetch_user_meal_plan(conn, user_id, date):
     cursor = conn.cursor()
     cursor.execute('''
@@ -102,7 +104,6 @@ def fetch_user_meal_plan(conn, user_id, date):
     ''', (user_id, date))
     return cursor.fetchall()
 
-# Track user progress
 def track_progress(conn, user_id, date, total_calories, total_protein, total_carbs, total_fats):
     cursor = conn.cursor()
     cursor.execute('''
@@ -111,7 +112,6 @@ def track_progress(conn, user_id, date, total_calories, total_protein, total_car
     ''', (user_id, date, total_calories, total_protein, total_carbs, total_fats))
     conn.commit()
 
-# Fetch user progress
 def fetch_progress(conn, user_id):
     cursor = conn.cursor()
     cursor.execute('''
@@ -122,23 +122,43 @@ def fetch_progress(conn, user_id):
     ''', (user_id,))
     return cursor.fetchall()
 
-# Authenticate user
 def authenticate_user(conn, username, password):
     cursor = conn.cursor()
     cursor.execute('''
-        SELECT user_id FROM Users WHERE username = ? AND password = ?
-    ''', (username, password))
-    return cursor.fetchone()
+        SELECT user_id, password FROM Users WHERE username = ?
+    ''', (username,))
+    user = cursor.fetchone()
+    if user:
+        stored_password = user[1]
+        if decrypt_password(stored_password) == password:
+            return user[0]
+    return None
 
-# Streamlit App
-def main():
+def global_login():
+    st.subheader("Global Login")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+    if st.button("Login"):
+        if username == "nds" and password == "nds":
+            st.session_state.global_login = True
+            st.success("Logged in successfully!")
+        else:
+            st.error("Invalid username or password")
+
+def main():  #actual main
     st.title("MEAL PLANNER")
     conn = create_connection("meal_planner.db")
     init_db(conn)
 
-    # Session state for user authentication
     if "user_id" not in st.session_state:
         st.session_state.user_id = None
+
+    if "global_login" not in st.session_state:
+        st.session_state.global_login = False
+
+    if not st.session_state.global_login:
+        global_login()
+        return
 
     menu = ["Home", "Sign Up", "Login", "Add Meal", "Plan Meals", "View Meal Plan", "Track Progress"]
     choice = st.sidebar.selectbox("Menu", menu)
@@ -166,7 +186,7 @@ def main():
         if st.button("Login"):
             user = authenticate_user(conn, username, password)
             if user:
-                st.session_state.user_id = user[0]
+                st.session_state.user_id = user
                 st.success(f"Logged in as {username}")
             else:
                 st.error("Invalid username or password")
@@ -192,7 +212,7 @@ def main():
             date = st.date_input("Date")
             dietary_preference = st.selectbox("Dietary Preference", ["Vegetarian", "Gluten-Free", "Keto", "None"])
             meals = fetch_meals(conn, dietary_preference)
-            meal_options = {meal[1]: meal[0] for meal in meals}  # {meal_name: meal_id}
+            meal_options = {meal[1]: meal[0] for meal in meals}
             selected_meal = st.selectbox("Select a Meal", list(meal_options.keys()))
             if st.button("Plan Meal"):
                 meal_id = meal_options[selected_meal]
@@ -240,4 +260,4 @@ def main():
             st.warning("Please login to track your progress.")
 
 if __name__ == "__main__":
-    main()
+    main()  #init main
