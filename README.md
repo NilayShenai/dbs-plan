@@ -11,7 +11,7 @@ A simple Meal Planner web application built with **Streamlit** and **SQLite**. U
 ## Installation
 1. Clone the repository:
    ```sh
-   git clone https://github.com/NilayShenai/dbs-plan/meal-planner.git
+   git clone https://github.com/NilayShenai/dbs-plan.git
    cd meal-planner
    ```
 2. Install dependencies:
