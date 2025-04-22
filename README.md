@@ -73,6 +73,40 @@ streamlit run app.py
 
 App will be available at: [http://localhost:8501](http://localhost:8501)
 
+## Docker Deployment
+
+You can run the full Meal Planner & Fitness Tracker using Docker — no manual setup needed.
+
+###  Requirements
+
+- [Docker](https://docs.docker.com/get-docker/) installed on your system
+
+---
+
+###  Run via Docker
+
+```bash
+docker run -p 8501:8501 nilayshenai/dbs-plan
+```
+
+> Open in your browser: [http://localhost:8501](http://localhost:8501)
+
+This pulls and runs the latest version directly from Docker Hub.
+
+---
+
+###  Persist Data (Optional)
+
+To store the `meal_planner.db` file on your host machine:
+
+```bash
+docker run -p 8501:8501 -v $(pwd)/db:/app nilayshenai/dbs-plan
+```
+
+This keeps your data safe between restarts by saving it to a `db/` folder locally.
+
+---
+
 ## Usage Guide
 
 ### Registration & Login
@@ -121,19 +155,3 @@ App will be available at: [http://localhost:8501](http://localhost:8501)
 - Add dietary preferences or meal types
 - Extend with new nutrition or fitness features
 - Integrate with cloud services or APIs
-=======
-## Installation
-1. Clone the repository:
-   ```sh
-   git clone https://github.com/NilayShenai/dbs-plan.git
-   cd meal-planner
-   ```
-2. Install dependencies:
-   ```sh
-   pip install streamlit cryptography
-   ```
-3. Run the application:
-   ```sh
-   streamlit run app.py
-   ```
-
