@@ -4,7 +4,6 @@ A comprehensive web app built with Streamlit and SQLite for personalized meal pl
 
 ## Features
 
-<<<<<<< HEAD
 ### User Authentication & Profile Management
 
 - Secure registration and login with SHA-256 password hashing
@@ -137,5 +136,4 @@ App will be available at: [http://localhost:8501](http://localhost:8501)
    ```sh
    streamlit run app.py
    ```
->>>>>>> 8b8fa53aabe700c60613f6e4ad593554c3f92ea1
 
