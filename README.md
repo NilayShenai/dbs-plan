@@ -1,5 +1,4 @@
-# Meal Planner & Fitness Tracker
-
+# DBS-PLAN
 A comprehensive web app built with Streamlit and SQLite for personalized meal planning, nutrition tracking, and fitness management. Users can set goals, plan meals, log workouts, and visualize health progress from a streamlined dashboard.
 
 ## Features
@@ -38,9 +37,6 @@ A comprehensive web app built with Streamlit and SQLite for personalized meal pl
 - Update user info, goals, and password
 - Real-time updates across the dashboard
 
-## Screenshots
-
-Add images of the dashboard, meal planner, charts, and workout logs.
 
 ## Tech Stack
 
@@ -56,7 +52,7 @@ Add images of the dashboard, meal planner, charts, and workout logs.
 
 ```bash
 git clone https://github.com/NilayShenai/dbs-plan.git
-cd meal-planner
+cd dbs-plan
 ```
 
 ### Install Dependencies
@@ -75,7 +71,7 @@ App will be available at: [http://localhost:8501](http://localhost:8501)
 
 ## Docker Deployment
 
-You can run the full Meal Planner & Fitness Tracker using Docker — no manual setup needed.
+You can run dbs-plan using Docker — no manual setup needed.
 
 ###  Requirements
 
