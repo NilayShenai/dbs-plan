@@ -869,23 +869,30 @@ def main():
         layout="wide"
     )
     st.markdown(
-            """
-            <style>
-                .github-icon {
-                    position: fixed;
-                    top: 10px;
-                    right: 10px;
-                    z-index: 9999;
-                }
-            </style>
-            <div class="github-icon">
-                <a href="https://github.com/NilayShenai" target="_blank">
-                    <img src="https://img.icons8.com/ios-glyphs/30/000000/github.png" alt="GitHub"/>
-                </a>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )    
+        """
+        <style>
+            .github-icon {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                z-index: 999;
+                opacity: 0.7;
+                transition: opacity 0.2s;
+            }
+            .github-icon:hover {
+                opacity: 1;
+            }
+        </style>
+        <div class="github-icon">
+            <a href="https://github.com/NilayShenai/dbs-plan" target="_blank">
+                <svg width="24" height="24" viewBox="0 0 16 16" fill="#6b7280">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
     conn = create_connection("meal_planner.db")
     if not conn:
         st.error("Failed to connect to database")
@@ -913,9 +920,21 @@ def main():
             if registration_form(conn):
                 st.rerun()
     st.markdown(
-        '<div class="footer">Created by Nilay Shenai</div>',
+        """
+        <style>
+            .footer {
+                text-align: center;
+                color: #6b7280;
+                font-size: 0.8rem;
+                padding: 10px;
+                margin-top: 2rem;
+            }
+        </style>
+        <div class="footer">Created by Nilay D. Shenai</div>
+        """,
         unsafe_allow_html=True
-    )    
+    )
+
 
 if __name__ == "__main__":
     main()
