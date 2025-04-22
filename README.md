@@ -4,6 +4,7 @@ A comprehensive web app built with Streamlit and SQLite for personalized meal pl
 
 ## Features
 
+<<<<<<< HEAD
 ### User Authentication & Profile Management
 
 - Secure registration and login with SHA-256 password hashing
@@ -121,4 +122,20 @@ App will be available at: [http://localhost:8501](http://localhost:8501)
 - Add dietary preferences or meal types
 - Extend with new nutrition or fitness features
 - Integrate with cloud services or APIs
+=======
+## Installation
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/NilayShenai/dbs-plan.git
+   cd meal-planner
+   ```
+2. Install dependencies:
+   ```sh
+   pip install streamlit cryptography
+   ```
+3. Run the application:
+   ```sh
+   streamlit run app.py
+   ```
+>>>>>>> 8b8fa53aabe700c60613f6e4ad593554c3f92ea1
 
